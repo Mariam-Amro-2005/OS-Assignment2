@@ -1,5 +1,7 @@
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.io.*;
+import java.util.*;
 
 public class ParkingLot {
     private static final int MAX_SPOTS = 4;
@@ -15,7 +17,7 @@ public class ParkingLot {
 
     }
 
-    public static synchronized void reportStatus() {
+    public static synchronized void reportStatus(List<Gate> gates) {
 
     }
 }
