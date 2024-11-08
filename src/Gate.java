@@ -17,6 +17,11 @@ public class Gate extends Thread {
     public int getGateNumber() {
         return gateNumber;
     }
+    
+    // Method to get the number of cars served by this gate
+    public int getCarsServed() {
+        return cars.size();
+    }
 
     @Override
     public void run() {

@@ -75,7 +75,8 @@ public class InputHandler {
             }
         }
 
-        ParkingLot.reportStatus();
+        // Pass the gates list to include gate details in the report
+        ParkingLot.reportStatus(gates);
     }
 
     public static void main(String[] args) {
