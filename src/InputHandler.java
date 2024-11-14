@@ -3,12 +3,12 @@ import java.util.*;
 
 public class InputHandler {
     private final List<Gate> gates = new ArrayList<>();
-    private final Map<Integer, Gate> gateInstances = new HashMap<>();  // Map to store a single instance of each gate
+    private final Map<Integer, Gate> gateInstances = new HashMap<>(); // Map to store a single instance of each gate
 
     public void loadCarsFromFile(String filePath) {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
-            Map<Integer, List<Car>> gateCarsMap = new HashMap<>();  // Map gate number to list of cars
+            Map<Integer, List<Car>> gateCarsMap = new HashMap<>(); // Map gate number to list of cars
 
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
@@ -37,18 +37,18 @@ public class InputHandler {
                 }
 
                 // Get or create the Gate instance for this gate number
-                Gate gate = gateInstances.computeIfAbsent(gateNumber, this::createGate);
+                Gate gate = gateInstances.computeIfAbsent(gateNumber, gatekey -> new Gate(gatekey, new ArrayList<>()));
 
-                // Create the Car object and add it to the gate's car list
-                Car car = new Car(carId, arrivalTime, parkingDuration, gate);
-                gateCarsMap.computeIfAbsent(gateNumber, k -> new ArrayList<>()).add(car);
+                 // Create the Car object and add it to the gate's car list
+                Car car = new Car(carId, arrivalTime, parkingDuration, gateNumber, gate);
+                gateCarsMap.computeIfAbsent(gateNumber, gatekey -> new ArrayList<>()).add(car);
             }
-
+            
             // Create Gate objects with assigned cars and add them to the `gates` list
             for (Map.Entry<Integer, List<Car>> entry : gateCarsMap.entrySet()) {
                 int gateNumber = entry.getKey();
                 Gate gate = gateInstances.get(gateNumber);  // Get the existing Gate instance
-                gate.setCars(entry.getValue());  // Assign cars to the Gate
+                gate.getCars().addAll(entry.getValue());  // Assign cars to the Gate
                 gates.add(gate);
             }
 
@@ -56,11 +56,6 @@ public class InputHandler {
             System.out.println("Error reading file: " + e.getMessage());
         }
     }
-
-    private Gate createGate(int gateNumber) {
-        return new Gate(gateNumber, new ArrayList<>());
-    }
-
 
     public void startSimulation() {
         for (Gate gate : gates) {
@@ -72,16 +67,16 @@ public class InputHandler {
                 gate.join();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
+                System.out.println("simulation is interrupted");
             }
         }
-
         // Pass the gates list to include gate details in the report
         ParkingLot.reportStatus(gates);
     }
 
     public static void main(String[] args) {
         InputHandler handler = new InputHandler();
-        handler.loadCarsFromFile("src/cars_schedule.txt");  // Replace with your file path
+        handler.loadCarsFromFile("src/cars_schedule.txt");
         handler.startSimulation();
     }
 }
