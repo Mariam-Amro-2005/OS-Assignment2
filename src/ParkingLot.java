@@ -4,7 +4,7 @@ import java.util.List;
 
 public class ParkingLot {
     private static final int MAX_SPOTS = 4;
-    private static final Semaphore parkingSpots = new Semaphore(MAX_SPOTS, true);
+    private static final SimpleSemaphore parkingSpots = new SimpleSemaphore(MAX_SPOTS, true);
     private static final AtomicInteger currentCars = new AtomicInteger(0);
     private static final AtomicInteger totalCarsServed = new AtomicInteger(0);
 
