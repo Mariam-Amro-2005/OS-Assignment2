@@ -4,16 +4,17 @@ import java.util.List;
 
 public class ParkingLot {
     private static final int MAX_SPOTS = 4;
-    private static final Semaphore parkingSpots = new Semaphore(MAX_SPOTS, true);
-    private static final AtomicInteger currentCars = new AtomicInteger(0);
-    private static final AtomicInteger totalCarsServed = new AtomicInteger(0);
+    private static  Semaphore parkingSpots = new Semaphore(MAX_SPOTS, true);
+    private static  AtomicInteger currentCars = new AtomicInteger(0);
+    private static  AtomicInteger carsServed = new AtomicInteger(0);
 
     public static void enter(Car car, Gate gate) { 
+        
         long waitToStart = System.currentTimeMillis();
         boolean acquired = parkingSpots.tryAcquire();
         if (acquired) {
             currentCars.incrementAndGet();
-            totalCarsServed.incrementAndGet();
+            carsServed.incrementAndGet();
             gate.incrementCarsServed(); 
             System.out.println("Car " + car.getCarId() + " from Gate " + car.getGateNumber() +
                     " parked. (Parking Status: " + currentCars.get() + " spots occupied)");
@@ -24,7 +25,7 @@ public class ParkingLot {
                 long waitToEnd = System.currentTimeMillis();
                 long waitTime = (waitToEnd - waitToStart) / 1000; // in seconds
                 currentCars.incrementAndGet();// the car is in the parking lot now
-                totalCarsServed.incrementAndGet();
+                carsServed.incrementAndGet();
                 gate.incrementCarsServed();
                 System.out.println("Car " + car.getCarId() + " from Gate " + car.getGateNumber() +
                         " parked after waiting for " + waitTime + " units of time. (Parking Status: "
@@ -48,7 +49,7 @@ public class ParkingLot {
 
     public static synchronized void reportStatus(List<Gate> gates) {
         System.out.println(".......");
-        System.out.println("Total cars served: " + totalCarsServed.get());
+        System.out.println("Total cars served: " + carsServed.get());
         System.out.println("Current Cars in Parking: " + currentCars);
         System.out.println("Details: ");
         for (Gate gate : gates) {

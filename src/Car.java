@@ -1,10 +1,11 @@
 import java.util.concurrent.TimeUnit;
 public class Car extends Thread {
-    private final int carId;
-    private final int arrivalTime;
-    private final int parkingDuration;
-    private final int gateNumber;
-    private final Gate gate;
+
+    private  int carId;
+    private  int arrivalTime;
+    private  int parkingDuration;
+    private  int gateNumber;
+    private  Gate gate;
 
     public Car(int carId, int arrivalTime, int parkingDuration, int gateNumber, Gate gate) {
         this.carId = carId;
