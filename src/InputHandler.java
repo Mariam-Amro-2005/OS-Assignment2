@@ -2,8 +2,8 @@ import java.io.*;
 import java.util.*;
 
 public class InputHandler {
-    private final List<Gate> gates = new ArrayList<>();
-    private final Map<Integer, Gate> gateInstances = new HashMap<>(); // Map to store a single instance of each gate
+    private  List<Gate> gates = new ArrayList<>();
+    private  Map<Integer, Gate> gateInstances = new HashMap<>(); // Map to store a single instance of each gate
 
     public void loadCarsFromFile(String filePath) {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
